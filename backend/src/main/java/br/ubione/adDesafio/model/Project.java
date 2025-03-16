@@ -1,5 +1,7 @@
 package br.ubione.adDesafio.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -22,6 +24,11 @@ public class Project {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	private LocalDateTime dtInicio;
+	private LocalDateTime dtPrevFim;
+	private LocalDateTime dtFim;
+	private BigDecimal orcamento;
+	private BigDecimal custoReal;
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;

@@ -20,7 +20,7 @@ public class Customer{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String namee;
+	private String name;
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private Set<Project> projects;
 }
