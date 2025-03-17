@@ -1,4 +1,4 @@
-package br.ubione.adDesafio.repository;
+package br.ubione.adDesafio.infraestructure.data;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import br.ubione.adDesafio.model.Project;
+import br.ubione.adDesafio.model.entities.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {

@@ -1,4 +1,4 @@
-package br.ubione.adDesafio.service;
+package br.ubione.adDesafio.application.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.ubione.adDesafio.model.Task;
-import br.ubione.adDesafio.repository.TaskRepository;
+import br.ubione.adDesafio.infraestructure.data.TaskRepository;
+import br.ubione.adDesafio.model.entities.Task;
 
 @Service
 public class TaskService {

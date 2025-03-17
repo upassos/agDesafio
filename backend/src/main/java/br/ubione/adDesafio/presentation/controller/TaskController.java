@@ -1,6 +1,7 @@
-package br.ubione.adDesafio.controller;
+package br.ubione.adDesafio.presentation.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ubione.adDesafio.model.Task;
-import br.ubione.adDesafio.service.TaskService;
+import br.ubione.adDesafio.application.services.TaskService;
+import br.ubione.adDesafio.model.entities.Task;
 
 @RestController
 @RequestMapping("/tasks")
@@ -27,14 +28,19 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping
-    public ResponseEntity<Page<Task>> list(
+    @GetMapping("/paginado")
+    public ResponseEntity<Page<Task>> filterList(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long projectId,
             @RequestParam(required = false) LocalDateTime dtInicio,
             @RequestParam(required = false) LocalDateTime dtFim,
             Pageable pageable) {
         return ResponseEntity.ok(taskService.list(name, projectId, dtInicio, dtFim, pageable));
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<Task>> list() {
+        return ResponseEntity.ok(taskService.list());
     }
 
     @PostMapping

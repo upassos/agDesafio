@@ -1,4 +1,4 @@
-package br.ubione.adDesafio.repository;
+package br.ubione.adDesafio.infraestructure.data;
 
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import br.ubione.adDesafio.model.Task;
+import br.ubione.adDesafio.model.entities.Task;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {

@@ -1,8 +1,8 @@
-package br.ubione.adDesafio.model;
+package br.ubione.adDesafio.model.entities;
 
+import br.ubione.adDesafio.application.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
-import br.ubione.adDesafio.enums.Role;
 
 @Data
 @Entity

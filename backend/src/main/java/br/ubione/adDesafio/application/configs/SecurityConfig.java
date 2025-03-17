@@ -1,4 +1,4 @@
-package br.ubione.adDesafio.config;
+package br.ubione.adDesafio.application.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
