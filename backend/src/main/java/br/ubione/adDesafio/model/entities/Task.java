@@ -1,9 +1,12 @@
 package br.ubione.adDesafio.model.entities;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,17 +24,45 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Task {
+
+	public Task(String name,
+			String description,
+			Timestamp dtInicio,
+			Timestamp dtPrevFim,
+			Timestamp dtFim,
+			Project project) {
+		this.name		= name;
+		this.description= description;
+		this.dtInicio   = dtInicio;
+		this.dtPrevFim  = dtPrevFim;
+		this.dtFim      = dtFim;
+		this.project	= project;
+	}
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String name;
-	private String description;
-	private LocalDateTime dtInicio;
-	private LocalDateTime dtPrevFim;
-	private LocalDateTime dtFim;
-	@JsonIgnore
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name", nullable = false, length = 120)
+    private String name;
+
+    @Column(name = "description", nullable = true)
+    private String description;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy")  
+    @Column(name = "dt_inicio", nullable = false)
+    private Timestamp dtInicio;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy") 
+    @Column(name = "dt_prev_fim", nullable = true)
+    private Timestamp dtPrevFim;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy")  
+    @Column(name = "dt_fim", nullable = true)
+    private Timestamp dtFim;
+
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)  // Project ID as foreign key
     private Project project;
 }

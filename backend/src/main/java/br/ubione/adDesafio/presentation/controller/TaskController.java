@@ -1,6 +1,6 @@
 package br.ubione.adDesafio.presentation.controller;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ubione.adDesafio.application.dto.TaskRequestDTO;
 import br.ubione.adDesafio.application.services.TaskService;
 import br.ubione.adDesafio.model.entities.Task;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/tasks")
@@ -32,8 +34,8 @@ public class TaskController {
     public ResponseEntity<Page<Task>> filterList(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Long projectId,
-            @RequestParam(required = false) LocalDateTime dtInicio,
-            @RequestParam(required = false) LocalDateTime dtFim,
+            @RequestParam(required = false) Timestamp dtInicio,
+            @RequestParam(required = false) Timestamp dtFim,
             Pageable pageable) {
         return ResponseEntity.ok(taskService.list(name, projectId, dtInicio, dtFim, pageable));
     }
@@ -44,7 +46,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> create(@RequestBody Task task) {
+    public ResponseEntity<Task> create(@Valid @RequestBody TaskRequestDTO task) {
         return ResponseEntity.ok(taskService.save(task));
     }
 

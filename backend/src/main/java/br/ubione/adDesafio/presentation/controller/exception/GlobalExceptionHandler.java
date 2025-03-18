@@ -22,4 +22,13 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "Erro interno no servidor");
+        errorResponse.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
 }

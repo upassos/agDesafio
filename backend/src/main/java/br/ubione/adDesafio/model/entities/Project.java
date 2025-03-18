@@ -1,10 +1,10 @@
 package br.ubione.adDesafio.model.entities;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import br.ubione.adDesafio.application.enums.ProjectStatus;
 import jakarta.persistence.CascadeType;
@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,6 +31,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Project {
 
+	public Project (String name, 
+					Timestamp dtInicio, 
+						Timestamp dtPrevFim, 
+							Timestamp dtFim, 
+					BigDecimal orcamento, 
+					BigDecimal custoReal,
+					ProjectStatus projectStatus,
+					Customer customer) {
+		this.name 			= name;
+		this.dtInicio  	 	= dtInicio;
+		this.dtPrevFim  	= dtPrevFim;
+		this.dtFim			= dtFim;
+		this.orcamento  	= orcamento;
+		this.custoReal  	= custoReal;
+		this.projectStatus  = projectStatus;
+		this.customer		= customer;
+	}
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,16 +57,16 @@ public class Project {
     private String name;
 
     @Column(name = "dt_inicio", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime dtInicio;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Timestamp dtInicio;
 
     @Column(name = "dt_prev_fim")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime dtPrevFim;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Timestamp dtPrevFim;
 
     @Column(name = "dt_fim")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    private LocalDateTime dtFim;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Timestamp dtFim;
 
     @Column(name = "orcamento", precision = 15, scale = 2)
     private BigDecimal orcamento;
@@ -63,6 +82,7 @@ public class Project {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private Set<Task> tasks;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Task> tasks;
+
 }

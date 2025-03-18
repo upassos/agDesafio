@@ -1,11 +1,11 @@
 package br.ubione.adDesafio.presentation.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ubione.adDesafio.application.dto.ProjectRequestDTO;
+import br.ubione.adDesafio.application.enums.ProjectStatus;
 import br.ubione.adDesafio.application.services.ProjectService;
+import br.ubione.adDesafio.application.vo.ProjectTaskVO;
 import br.ubione.adDesafio.model.entities.Project;
 import jakarta.validation.Valid;
 
@@ -42,7 +45,7 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<Project> create(@Valid @RequestBody Project project) {
+    public ResponseEntity<Project> create(@Valid @RequestBody ProjectRequestDTO project) {
         return ResponseEntity.ok(projectService.save(project));
     }
 
@@ -56,12 +59,18 @@ public class ProjectController {
     public ResponseEntity<Page<Project>> getProjects(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "customerId", required = false) Long customerId,
-            @RequestParam(value = "dtInicio", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dtInicio,
-            @RequestParam(value = "dtFim", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dtFim,
-            Pageable pageable) {
+            @RequestParam(value = "projectStatus", required = false) ProjectStatus projectStatus,  
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sort) {
 
-        Page<Project> projects = projectService.getProjectsByFilters(name, customerId, dtInicio, dtFim, pageable);
+        Sort sorting = (sort != null) ? Sort.by(sort) : Sort.by("id");
+
+        Pageable pageable = PageRequest.of(page, size, sorting);
+
+        Page<Project> projects = projectService.getProjectsByFilters(name, customerId, projectStatus, pageable);
 
         return ResponseEntity.ok(projects);
     }
+
 }
